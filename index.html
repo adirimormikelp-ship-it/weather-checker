@@ -1,16 +1,15 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 
 <title>Global Weather App</title>
-
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 
 body{
 font-family:Arial;
-background:linear-gradient(135deg,#5f9cff,#6dd5ed);
+background:linear-gradient(135deg,#6a11cb,#2575fc);
 display:flex;
 justify-content:center;
 align-items:center;
@@ -20,21 +19,16 @@ margin:0;
 
 .container{
 background:white;
-padding:30px;
+width:320px;
+padding:25px;
 border-radius:15px;
-width:300px;
 text-align:center;
-box-shadow:0 10px 25px rgba(0,0,0,0.2);
-}
-
-h1{
-color:#333;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
 }
 
 input{
 width:80%;
 padding:10px;
-margin-top:10px;
 border-radius:8px;
 border:1px solid #ccc;
 }
@@ -43,15 +37,20 @@ button{
 margin-top:10px;
 padding:10px 15px;
 border:none;
-background:#4a90e2;
-color:white;
 border-radius:8px;
+background:#2575fc;
+color:white;
 cursor:pointer;
 }
 
 .weather{
 margin-top:20px;
 color:#333;
+}
+
+.forecast{
+margin-top:20px;
+font-size:14px;
 }
 
 </style>
@@ -62,7 +61,7 @@ color:#333;
 
 <div class="container">
 
-<h1>🌤 Weather</h1>
+<h2>🌤 Weather</h2>
 
 <input id="city" placeholder="Enter city">
 
@@ -70,7 +69,11 @@ color:#333;
 
 <button onclick="getWeather()">Search</button>
 
+<button onclick="getLocationWeather()">📍 My Location</button>
+
 <div class="weather" id="weather"></div>
+
+<div class="forecast" id="forecast"></div>
 
 </div>
 
@@ -88,9 +91,43 @@ let response=await fetch(url);
 
 let data=await response.json();
 
+displayWeather(data);
+
+getForecast(city);
+
+}
+
+function getLocationWeather(){
+
+navigator.geolocation.getCurrentPosition(async position=>{
+
+let lat=position.coords.latitude;
+
+let lon=position.coords.longitude;
+
+let url=`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+let response=await fetch(url);
+
+let data=await response.json();
+
+displayWeather(data);
+
+getForecast(data.name);
+
+});
+
+}
+
+function displayWeather(data){
+
+let icon=`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
 document.getElementById("weather").innerHTML=`
 
-<h2>${data.name}</h2>
+<h3>${data.name}</h3>
+
+<img src="${icon}">
 
 <p>🌡 ${data.main.temp} °C</p>
 
@@ -98,9 +135,29 @@ document.getElementById("weather").innerHTML=`
 
 <p>💧 Humidity: ${data.main.humidity}%</p>
 
-<p>💨 Wind: ${data.wind.speed} m/s</p>
-
 `;
+
+}
+
+async function getForecast(city){
+
+let url=`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+
+let response=await fetch(url);
+
+let data=await response.json();
+
+let forecastHTML="";
+
+for(let i=0;i<5;i++){
+
+let item=data.list[i];
+
+forecastHTML+=`<p>${item.main.temp}°C - ${item.weather[0].description}</p>`;
+
+}
+
+document.getElementById("forecast").innerHTML=forecastHTML;
 
 }
 
@@ -108,4 +165,4 @@ document.getElementById("weather").innerHTML=`
 
 </body>
 
-</htmlawaitwait
+</html>
