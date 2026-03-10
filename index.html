@@ -1,0 +1,38 @@
+<!DOCTYPE html>index.html
+<html>
+<head>
+<title>Global Weather App</title>
+</head>
+
+<body>
+
+<h1>Weather App</h1>
+
+<input type="text" id="city" placeholder="Enter city name">
+<button onclick="getWeather()">Check Weather</button>
+
+<h2 id="result"></h2>
+
+<script>
+
+async function getWeather(){
+
+let city = document.getElementById("city").value;
+
+let apiKey = "fef0610b48904ea1c0c811b82de12697
+
+let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+let response = await fetch(url);
+
+let data = await response.json();
+
+document.getElementById("result").innerHTML =
+`Temperature in ${city}: ${data.main.temp}°C`;
+
+}
+
+</script>
+
+</body>
+</html>
