@@ -1,55 +1,78 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
+
 <title>Global Weather App</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
+
 body{
-font-family: Arial;
-background: linear-gradient(to right,#36d1dc,#5b86e5);
-color:white;
+font-family:Arial;
+background:linear-gradient(135deg,#5f9cff,#6dd5ed);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.container{
+background:white;
+padding:30px;
+border-radius:15px;
+width:300px;
 text-align:center;
-padding-top:80px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+h1{
+color:#333;
 }
 
 input{
-padding:12px;
-font-size:16px;
-border-radius:6px;
-border:none;
+width:80%;
+padding:10px;
+margin-top:10px;
+border-radius:8px;
+border:1px solid #ccc;
 }
 
 button{
-padding:12px 20px;
-font-size:16px;
+margin-top:10px;
+padding:10px 15px;
 border:none;
-border-radius:6px;
-background:black;
+background:#4a90e2;
 color:white;
+border-radius:8px;
 cursor:pointer;
-margin:5px;
 }
 
-.weather-box{
-margin-top:30px;
-font-size:20px;
+.weather{
+margin-top:20px;
+color:#333;
 }
+
 </style>
 
 </head>
 
 <body>
 
-<h1>🌍 Global Weather</h1>
+<div class="container">
 
-<input id="city" placeholder="Enter city name">
+<h1>🌤 Weather</h1>
+
+<input id="city" placeholder="Enter city">
+
+<br>
+
 <button onclick="getWeather()">Search</button>
 
-<br><br>
+<div class="weather" id="weather"></div>
 
-<button onclick="getLocationWeather()">📍 Use My Location</button>
-
-<div class="weather-box" id="weather"></div>
+</div>
 
 <script>
 
@@ -65,43 +88,17 @@ let response=await fetch(url);
 
 let data=await response.json();
 
-displayWeather(data);
-
-}
-
-function getLocationWeather(){
-
-navigator.geolocation.getCurrentPosition(async position=>{
-
-let lat=position.coords.latitude;
-
-let lon=position.coords.longitude;
-
-let url=`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-
-let response=await fetch(url);
-
-let data=await response.json();
-
-displayWeather(data);
-
-});
-
-}
-
-function displayWeather(data){
-
 document.getElementById("weather").innerHTML=`
 
 <h2>${data.name}</h2>
 
-<p>🌡 Temperature: ${data.main.temp} °C</p>
+<p>🌡 ${data.main.temp} °C</p>
 
-<p>☁ Weather: ${data.weather[0].description}</p>
+<p>${data.weather[0].description}</p>
 
 <p>💧 Humidity: ${data.main.humidity}%</p>
 
-<p>💨 Wind Speed: ${data.wind.speed} m/s</p>
+<p>💨 Wind: ${data.wind.speed} m/s</p>
 
 `;
 
@@ -110,4 +107,5 @@ document.getElementById("weather").innerHTML=`
 </script>
 
 </body>
-</html>
+
+</htmlawaitwait
