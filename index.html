@@ -1,38 +1,87 @@
-<!DOCTYPE html>index.html
+<!DOCTYPE html>
 <html>
 <head>
+
 <title>Global Weather App</title>
+
+<style>
+
+body{
+font-family: Arial;
+text-align:center;
+background:linear-gradient(to right,#4facfe,#00f2fe);
+color:white;
+padding-top:100px;
+}
+
+input{
+padding:10px;
+font-size:16px;
+border:none;
+border-radius:5px;
+}
+
+button{
+padding:10px 20px;
+font-size:16px;
+border:none;
+background:#333;
+color:white;
+border-radius:5px;
+cursor:pointer;
+}
+
+.weather-box{
+margin-top:30px;
+font-size:20px;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<h1>Weather App</h1>
+<h1>🌤 Global Weather App</h1>
 
-<input type="text" id="city" placeholder="Enter city name">
+<input id="city" placeholder="Enter city name">
+
 <button onclick="getWeather()">Check Weather</button>
 
-<h2 id="result"></h2>
+<div class="weather-box" id="weather"></div>
 
 <script>
 
 async function getWeather(){
 
-let city = document.getElementById("city").value;
+let city=document.getElementById("city").value;
 
-let apiKey = "fef0610b48904ea1c0c811b82de12697
+let apiKey="a213da6ce1c3cc3c01230b6fcb5e6882
 
-let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+let url=`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
-let response = await fetch(url);
+let response=await fetch(url);
 
-let data = await response.json();
+let data=await response.json();
 
-document.getElementById("result").innerHTML =
-`Temperature in ${city}: ${data.main.temp}°C`;
+document.getElementById("weather").innerHTML=`
+
+<h2>${data.name}</h2>
+
+<p>🌡 Temperature: ${data.main.temp} °C</p>
+
+<p>☁ Weather: ${data.weather[0].description}</p>
+
+<p>💧 Humidity: ${data.main.humidity}%</p>
+
+<p>💨 Wind: ${data.wind.speed} m/s</p>
+
+`;
 
 }
 
 </script>
 
 </body>
+
 </html>
